@@ -1,0 +1,37 @@
+name: Auto-Rebase dev onto master (if needed)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  auto-rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # fetch full history
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch dev branch
+        run: |
+          git fetch origin dev:dev
+
+      - name: Check if dev is behind master
+        id: check
+        run: |
+          git checkout dev
+          git rebase origin/master --dry-run || echo "needs-rebase"
+        continue-on-error: true
+
+      - name: Rebase and push dev (only if needed)
+        if: steps.check.outcome == 'failure'
+        run: |
+          git rebase origin/master
+          git push origin dev --force-with-lease
