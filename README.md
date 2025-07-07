@@ -1,5 +1,7 @@
 # Astro Starter Kit: Minimal
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 ```sh
 npm create astro@latest -- --template minimal
 ```
