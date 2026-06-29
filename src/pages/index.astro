@@ -16,7 +16,9 @@ const blogSubtitle = "Thoughts, tutorials, and ideas.";
 <ul>
   {posts.map((post) => (
     <li>
-      <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+      <a href={`/blog/${post.slug}`}>
+        {post.data.title}
+      </a>
       <p>{post.data.description}</p>
     </li>
   ))}
